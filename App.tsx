@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, useColorScheme, StatusBar, Button } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, useCameraDevice, useCameraPermission, CameraPermissionStatus, useCameraDevices } from 'react-native-vision-camera';
+import { Camera, useCameraDevice, CameraPermissionStatus, useCodeScanner } from 'react-native-vision-camera';
 
 
  function Cam() {
-  const devices = useCameraDevices();
   const device = useCameraDevice('back');
 
   const [permission, setPermission] = useState<CameraPermissionStatus>('not-determined');
+
+  // Sempre chame os hooks no topo, independentemente de condições
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: (codes) => {
+      console.log(`Scanned ${codes.length} codes!`, codes);
+    },
+  });
 
   useEffect(() => {
     async function getPermission() {
@@ -37,6 +44,7 @@ import { Camera, useCameraDevice, useCameraPermission, CameraPermissionStatus, u
       style={StyleSheet.absoluteFill}
       device={device}
       isActive={true}
+      codeScanner={codeScanner}
     />
   );
 }
