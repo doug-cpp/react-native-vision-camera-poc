@@ -9,7 +9,7 @@ function Cam({ onClose }: { onClose: () => void }) {
   const [isActive, setIsActive] = useState(true);
 
   const codeScanner = useCodeScanner({
-    codeTypes: ['qr', 'ean-13'],
+    codeTypes: ['qr', 'ean-13'],  // QR codes e códigos de barras EAN-13
     onCodeScanned: (codes) => {
       setIsActive(false);
       console.log(`Scanned ${codes.length} codes!`, codes);
